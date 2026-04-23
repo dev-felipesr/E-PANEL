@@ -1,0 +1,65 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Criar conta";
+}
+
+<section class="row justify-content-center auth-layout">
+    <div class="col-sm-10 col-md-9 col-lg-7 col-xl-6">
+        <div class="card panel-card auth-card auth-card-wide">
+            <div class="card-body">
+                <h1 class="h4 page-title">Criar conta no E-PANEL</h1>
+                <p class="text-secondary mb-4">A comunidade é separada por número da ETEC.</p>
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="EtecNumber" class="form-label"></label>
+                        <input asp-for="EtecNumber" class="form-control" />
+                        <span asp-validation-for="EtecNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsProfessor" class="form-check-input" />
+                        <label asp-for="IsProfessor" class="form-check-label"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Criar conta</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a asp-action="Login">Já tem conta? Entrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

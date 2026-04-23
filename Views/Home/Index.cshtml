@@ -1,0 +1,72 @@
+@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Feed";
+}
+
+<div class="page-header page-header-highlight panel-card d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 page-title">Feed da ETEC @Model.EtecNumber</h1>
+        <p class="text-secondary mb-0">Posts da sua unidade, ordenados por relevância.</p>
+    </div>
+    <a asp-controller="Posts" asp-action="Create" class="btn btn-primary px-4">Criar postagem</a>
+</div>
+
+<div class="row g-3 g-xl-4 feed-grid">
+    <section class="col-lg-8 feed-column">
+        <h2 class="h5 section-title">Comunidade</h2>
+        @if (!Model.FeedPosts.Any())
+        {
+            <div class="alert alert-light border">Ainda não há postagens da comunidade nesta ETEC.</div>
+        }
+        else
+        {
+            @foreach (var post in Model.FeedPosts)
+            {
+                <article class="card panel-card feed-card mb-3">
+                    <div class="card-body">
+                        <div class="feed-item-layout d-flex gap-3">
+                            <div class="vote-controls text-center" data-url="@Url.Action("Vote", "Posts")" data-id="@post.Id">
+                                <button type="button" class="btn btn-sm vote-btn @(post.CurrentUserVote == 1 ? "btn-success" : "btn-outline-success")" data-value="1">▲</button>
+                                <div class="fw-semibold score-value">@post.Score</div>
+                                <button type="button" class="btn btn-sm vote-btn @(post.CurrentUserVote == -1 ? "btn-danger" : "btn-outline-danger")" data-value="-1">▼</button>
+                            </div>
+                            <div class="flex-grow-1 feed-content">
+                                <h3 class="h5 mb-2">@post.Title</h3>
+                                <div class="post-content text-secondary">@post.Content</div>
+                                <small class="text-muted meta-line">por @post.AuthorName • @post.CreatedAt.LocalDateTime.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            }
+        }
+    </section>
+
+    <aside class="col-lg-4 notices-column">
+        <h2 class="h5 section-title">Avisos e eventos</h2>
+        @if (!Model.NoticePosts.Any())
+        {
+            <div class="alert alert-light border">Sem avisos de professores no momento.</div>
+        }
+        else
+        {
+            @foreach (var notice in Model.NoticePosts)
+            {
+                var badgeClass = notice.PostType == PostType.Event ? "badge-event" : "badge-notice";
+                var badgeText = notice.PostType == PostType.Event ? "Evento" : "Aviso";
+                <article class="card panel-card notice-card notice-feed-card mb-3">
+                    <div class="card-body">
+                        <div class="feed-item-layout d-flex gap-3">
+                            <div class="flex-grow-1 feed-content">
+                                <span class="badge custom-badge @badgeClass mb-2">@badgeText</span>
+                                <h3 class="h6 mb-1">@notice.Title</h3>
+                                <p class="post-content text-secondary mb-1">@notice.Content</p>
+                                <small class="text-muted meta-line">por @notice.AuthorName • @notice.CreatedAt.LocalDateTime.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            }
+        }
+    </aside>
+</div>
